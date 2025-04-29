@@ -2,6 +2,7 @@
 #ifndef __MINIJESON_JSONELEMENT_H__
 #define	__MINIJESON_JSONELEMENT_H__
 
+#include <iostream>
 #include <memory>
 #include <string>
 #include <exception>
@@ -37,20 +38,41 @@ namespace MiniJson
 		// TODO ARRAY
 
 	public:
+		// Opertaors
+		operator std::string();
+		operator float();
+		operator bool();
+
+		template <typename T>
+		T& operator=(const T& val);
+		std::string& operator=(const char* val);
+		friend std::ostream& operator<<(std::ostream& os, const JsonElement& jsonElement);
 
 		JsonElement();
 
 		// Add public methods and members here
 		void GetType();
 		void SetString(const std::string& str);
-		void SetNumber(float val);
-		void SetBool(bool val);
+		void SetNumber(const float& val);
+		void SetBool(const bool& val);
 
-		bool GetBool() const;
-		float GetFloat() const;
-		std::string GetString() const;
+		bool& GetBool();
+		float& GetFloat();
+		std::string& GetString();
 
 	};
+
+	// Template specializations for operator=
+	template<>
+	float& JsonElement::operator=<float>(const float& val);
+
+	template<>
+	std::string& JsonElement::operator=<std::string>(const std::string& val);
+
+	template<>
+	bool& JsonElement::operator=<bool>(const bool& val);
+	// = Char
+
 }
 
 #endif

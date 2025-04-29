@@ -3,20 +3,32 @@
 
 int main()
 {
+
 	MiniJson::Json json_test;
-	json_test.SetElement<std::string>("Tester_string", "Test");
-	json_test.SetElement<float>("Tester_float", 3.14f);
+	try
+	{
+		json_test["Tester_string"] = "Hello World!";
+		json_test["Tester_float"] = 3.14f;
+		json_test["Tester_bool"] = true;
 
-	bool test_bool = true;
-	json_test.SetElement("Tester_bool", test_bool);
+		bool test_bool = json_test["Tester_bool"];
 
-	float test_float = json_test.GetElement<float>("Tester_float");
-	std::string test_string = json_test.GetElement<std::string>("Tester_string");
-	test_bool = json_test.GetElement<bool>("Tester_bool");
+		float test_float = json_test["Tester_float"];
+		std::string test_string = json_test["Tester_string"];
 
-	std::cout << "Test Bool: " << std::boolalpha << test_bool << std::endl;
-	std::cout << "Test String: " << test_string << std::endl;
-	std::cout << "Test Float: " << test_float << std::endl;
+		std::cout << "Test String: " << json_test["Tester_string"] << std::endl;
+		std::cout << "Test Bool: " << std::boolalpha << json_test["Tester_bool"] << std::endl;
+		std::cout << "Test Float: " << json_test["Tester_float"] << std::endl;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Error: " << e.what() << std::endl;
+	}
+	catch (...)
+	{
+		std::cerr << "Unknown error occurred." << std::endl;
+	}
 
+	getchar();
 	return EXIT_SUCCESS;	
 }

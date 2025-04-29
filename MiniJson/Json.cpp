@@ -2,65 +2,18 @@
 
 namespace MiniJson
 {
-	template <>
-	void Json::SetElement<std::string>(const std::string& key, const std::string& value)
-	{
-		if (m_Elements_map.find(key) == m_Elements_map.end())
-		{
-			m_Elements_map[key] = std::make_unique<JsonElement>();
-			m_Elements_map[key]->SetString(value);
-			return;
-		}
-
-		// else
-		m_Elements_map[key]->SetString(value);
-	}
-
-	//template <>
-	//void Json::SetElement<int>(const std::string& key, const int& value)
-	//{
-	//	if (m_Elements_map.find(key) == m_Elements_map.end())
-	//	{
-	//		m_Elements_map[key] = std::make_unique<JsonElement>();
-	//		m_Elements_map[key]->SetNumber(value);
-	//		return;
-	//	}
-
-	//	// else
-	//	m_Elements_map[key]->SetNumber(value);
-
-	//}
-
-	template <>
-	void Json::SetElement<float>(const std::string& key, const float& value)
-	{
-		if (m_Elements_map.find(key) == m_Elements_map.end())
-		{
-			m_Elements_map[key] = std::make_unique<JsonElement>();
-			m_Elements_map[key]->SetNumber(value);
-			return;
-		}
-
-		// else
-		m_Elements_map[key]->SetNumber(value);
-	}
-
-	template <>
-	void Json::SetElement<bool>(const std::string& key, const bool& value)
-	{
-		if (m_Elements_map.find(key) == m_Elements_map.end())
-		{
-			m_Elements_map[key] = std::make_unique<JsonElement>();
-			m_Elements_map[key]->SetBool(value);
-			return;
-		}
-
-		// else
-		m_Elements_map[key]->SetBool(value);
-	}
-
 	Json::Json()
 	{
+	}
+
+	JsonElement& Json::operator[](const std::string& key)
+	{
+		auto itr = m_Elements_map.find(key);
+		if (itr == m_Elements_map.end())
+		{
+			itr = m_Elements_map.emplace(key, std::make_unique<JsonElement>()).first;
+		}
+		return *(itr->second.get());
 	}
 
 	template<>
@@ -75,6 +28,14 @@ namespace MiniJson
 		{
 			throw std::runtime_error("Key not found");
 		}
+	}
+
+	template<typename T>
+	T& Json::emplace(const std::string& key, const T& val)
+	{
+		// TODO: insert return statement here
+		m_Elements_map[key] = std::make_unique<JsonElement>();
+		return m_Elements_map[key]->operator=<T>(val);
 	}
 
 	template<>
@@ -105,4 +66,13 @@ namespace MiniJson
 		}
 	}
 
+	JsonElement& Json::at(const std::string& key)
+	{
+		auto itr = m_Elements_map.find(key);
+		if (itr == m_Elements_map.end())
+		{
+			throw std::runtime_error("Key not found");
+		}
+		return *(itr->second.get());
+	}
 }
