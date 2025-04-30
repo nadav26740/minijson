@@ -21,7 +21,7 @@
     <ClCompile Include="Json.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="JsonElement.cpp">
+    <ClCompile Include="JsonBaseType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,7 +29,7 @@
     <ClInclude Include="Json.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="JsonElement.h">
+    <ClInclude Include="JsonBaseType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

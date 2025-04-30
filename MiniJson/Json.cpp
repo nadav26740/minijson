@@ -6,12 +6,12 @@ namespace MiniJson
 	{
 	}
 
-	JsonElement& Json::operator[](const std::string& key)
+	JsonBaseType& Json::operator[](const std::string& key)
 	{
 		auto itr = m_Elements_map.find(key);
 		if (itr == m_Elements_map.end())
 		{
-			itr = m_Elements_map.emplace(key, std::make_unique<JsonElement>()).first;
+			itr = m_Elements_map.emplace(key, std::make_unique<JsonBaseType>()).first;
 		}
 		return *(itr->second.get());
 	}
@@ -34,7 +34,7 @@ namespace MiniJson
 	T& Json::emplace(const std::string& key, const T& val)
 	{
 		// TODO: insert return statement here
-		m_Elements_map[key] = std::make_unique<JsonElement>();
+		m_Elements_map[key] = std::make_unique<JsonBaseType>();
 		return m_Elements_map[key]->operator=<T>(val);
 	}
 
@@ -66,7 +66,7 @@ namespace MiniJson
 		}
 	}
 
-	JsonElement& Json::at(const std::string& key)
+	JsonBaseType& Json::at(const std::string& key)
 	{
 		auto itr = m_Elements_map.find(key);
 		if (itr == m_Elements_map.end())

@@ -1,64 +1,73 @@
-#include "JsonElement.h"
+#include "JsonBaseType.h"
 
-MiniJson::JsonElement::operator std::string()
+void MiniJson::JsonBaseType::Reset()
+{
+	switch (this->m_type)
+	{
+	case JSON_TYPE::JSON_STRING:
+		this->m_ValueUnion.string_val.reset();
+		break;
+	
+	case JSON_TYPE::JSON_ARRAY:
+		this->m_VectorElements.clear();
+	
+	default:
+		break;
+	}
+
+	this->m_type = JSON_TYPE::JSON_NULL;
+}
+
+MiniJson::JsonBaseType::operator std::string()
 {
 	return this->GetString();
 }
 
-MiniJson::JsonElement::operator float()
+MiniJson::JsonBaseType::operator float()
 {
 	return this->GetFloat();
 }
 
-MiniJson::JsonElement::operator bool()
+MiniJson::JsonBaseType::operator bool()
 {
 	return this->GetBool();
 }
 
-MiniJson::JsonElement::JsonElement()
+MiniJson::JsonBaseType::JsonBaseType()
 {
 	this->m_type = JSON_TYPE::JSON_NULL;
 	this->m_ValueUnion.string_val = nullptr;
 }
 
-void MiniJson::JsonElement::GetType()
+void MiniJson::JsonBaseType::GetType()
 {
 }
 
-void MiniJson::JsonElement::SetString(const std::string& str)
+void MiniJson::JsonBaseType::SetString(const std::string& str)
 {
-		if (this->m_type == JSON_TYPE::JSON_STRING)
-	{
-		this->m_ValueUnion.string_val.reset();
-	}
+	this->Reset();
 	
 	this->m_ValueUnion.string_val = std::make_shared<std::string>(str);
 	this->m_type = JSON_TYPE::JSON_STRING;
 }
 
-void MiniJson::JsonElement::SetNumber(const float& val)
+void MiniJson::JsonBaseType::SetNumber(const float& val)
 {
-	if (this->m_type == JSON_TYPE::JSON_STRING)
-	{
-		this->m_ValueUnion.string_val.reset();
-	}
+	this->Reset();
 	
 	this->m_ValueUnion.float_val = val;
 	this->m_type = JSON_TYPE::JSON_NUMBER;
 }
 
-void MiniJson::JsonElement::SetBool(const bool& val)
+void MiniJson::JsonBaseType::SetBool(const bool& val)
 {
-	if (this->m_type == JSON_TYPE::JSON_STRING)
-	{
-		this->m_ValueUnion.string_val.reset();
-	}
+	this->Reset();
 	
 	this->m_ValueUnion.bool_val = val;
 	this->m_type = JSON_TYPE::JSON_BOOL;
 }
 
-bool& MiniJson::JsonElement::GetBool()
+bool& MiniJson::JsonBaseType::GetBool()
 {
 	if (this->m_type == JSON_TYPE::JSON_BOOL)
 	{
@@ -70,7 +79,7 @@ bool& MiniJson::JsonElement::GetBool()
 	}
 }
 
-float& MiniJson::JsonElement::GetFloat()
+float& MiniJson::JsonBaseType::GetFloat()
 {
 	if (this->m_type == JSON_TYPE::JSON_NUMBER)
 	{
@@ -82,7 +91,7 @@ float& MiniJson::JsonElement::GetFloat()
 	}
 }
 
-std::string& MiniJson::JsonElement::GetString()
+std::string& MiniJson::JsonBaseType::GetString()
 {
 	if (this->m_type == JSON_TYPE::JSON_STRING)
 	{
@@ -95,7 +104,7 @@ std::string& MiniJson::JsonElement::GetString()
 }
 
 template<>
-float& MiniJson::JsonElement::operator=<float>(const float& val)
+float& MiniJson::JsonBaseType::operator=<float>(const float& val)
 {
 	// TODO: insert return statement here
 	this->SetNumber(val);
@@ -104,7 +113,7 @@ float& MiniJson::JsonElement::operator=<float>(const float& val)
 }
 
 template<>
-std::string& MiniJson::JsonElement::operator=<std::string>(const std::string& val)
+std::string& MiniJson::JsonBaseType::operator=<std::string>(const std::string& val)
 {
 	// TODO: insert return statement here
 	this->SetString(val);
@@ -113,7 +122,7 @@ std::string& MiniJson::JsonElement::operator=<std::string>(const std::string& va
 }
 
 template<>
-bool& MiniJson::JsonElement::operator=<bool>(const bool& val)
+bool& MiniJson::JsonBaseType::operator=<bool>(const bool& val)
 {
 	// TODO: insert return statement here
 	this->SetBool(val);
@@ -122,14 +131,14 @@ bool& MiniJson::JsonElement::operator=<bool>(const bool& val)
 }
 
 
-std::string& MiniJson::JsonElement::operator=(const char* val)
+std::string& MiniJson::JsonBaseType::operator=(const char* val)
 {
 	this->SetString(std::string(val));
 	return this->GetString();
 }
 
 //
-std::ostream& MiniJson::operator<<(std::ostream& os, const JsonElement& obj)
+std::ostream& MiniJson::operator<<(std::ostream& os, const JsonBaseType& obj)
 {
 	// TODO: insert return statement here
 	switch (obj.m_type)

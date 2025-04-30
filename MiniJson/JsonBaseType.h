@@ -7,6 +7,7 @@
 #include <string>
 #include <exception>
 #include <stdexcept>
+#include <vector>
 
 namespace MiniJson
 {
@@ -21,10 +22,11 @@ namespace MiniJson
 	};
 
 	// Forward declaration of JsonElement class
-	class JsonElement
+	class JsonBaseType
 	{
 	private:
 		JSON_TYPE m_type;
+
 		union t_ValueUnions
 		{
 			std::shared_ptr<std::string> string_val;
@@ -34,24 +36,29 @@ namespace MiniJson
 			~t_ValueUnions() { float_val = NULL; } // Destructor
 		};
 
+		std::vector<JsonBaseType> m_VectorElements;
+
 		t_ValueUnions m_ValueUnion;
-		// TODO ARRAY
+		
+		void Reset();
 
 	public:
-		// Opertaors
+		// Parse Operators
 		operator std::string();
 		operator float();
 		operator bool();
 
+		// Opertaors
 		template <typename T>
 		T& operator=(const T& val);
 		std::string& operator=(const char* val);
-		friend std::ostream& operator<<(std::ostream& os, const JsonElement& jsonElement);
+		friend std::ostream& operator<<(std::ostream& os, const JsonBaseType& jsonElement);
 
-		JsonElement();
+		JsonBaseType();
 
 		// Add public methods and members here
 		void GetType();
+		
 		void SetString(const std::string& str);
 		void SetNumber(const float& val);
 		void SetBool(const bool& val);
@@ -64,13 +71,13 @@ namespace MiniJson
 
 	// Template specializations for operator=
 	template<>
-	float& JsonElement::operator=<float>(const float& val);
+	float& JsonBaseType::operator=<float>(const float& val);
 
 	template<>
-	std::string& JsonElement::operator=<std::string>(const std::string& val);
+	std::string& JsonBaseType::operator=<std::string>(const std::string& val);
 
 	template<>
-	bool& JsonElement::operator=<bool>(const bool& val);
+	bool& JsonBaseType::operator=<bool>(const bool& val);
 	// = Char
 
 }

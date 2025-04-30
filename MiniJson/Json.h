@@ -7,7 +7,7 @@
 #include <map>
 #include <memory>
 
-#include "JsonElement.h"
+#include "JsonBaseType.h"
 
 
 namespace MiniJson
@@ -16,7 +16,7 @@ namespace MiniJson
 	{
 	private:
 		// Private members and methods can be declared here
-		std::map<std::string, std::unique_ptr<JsonElement>> m_Elements_map;
+		std::map<std::string, std::unique_ptr<JsonBaseType>> m_Elements_map;
 
 		template <typename T>
 		T GetElement(const std::string& key) const;
@@ -27,9 +27,9 @@ namespace MiniJson
 		template <typename T>
 		T& emplace(const std::string& key, const T& val);
 
-		JsonElement& operator[](const std::string& key);
+		JsonBaseType& operator[](const std::string& key);
 
-		JsonElement& at(const std::string& key);
+		JsonBaseType& at(const std::string& key);
 		
 	};
 	

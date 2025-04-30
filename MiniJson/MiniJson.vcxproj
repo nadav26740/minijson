@@ -128,12 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Json.cpp" />
-    <ClCompile Include="JsonElement.cpp" />
+    <ClCompile Include="JsonBaseType.cpp" />
     <ClCompile Include="Tester.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Json.h" />
-    <ClInclude Include="JsonElement.h" />
+    <ClInclude Include="JsonBaseType.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
