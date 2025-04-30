@@ -8,12 +8,7 @@ namespace MiniJson
 
 	JsonBaseType& Json::operator[](const std::string& key)
 	{
-		auto itr = m_Elements_map.find(key);
-		if (itr == m_Elements_map.end())
-		{
-			itr = m_Elements_map.emplace(key, std::make_unique<JsonBaseType>()).first;
-		}
-		return *(itr->second.get());
+		return this->at(key);
 	}
 
 	template<>
@@ -71,7 +66,7 @@ namespace MiniJson
 		auto itr = m_Elements_map.find(key);
 		if (itr == m_Elements_map.end())
 		{
-			throw std::runtime_error("Key not found");
+			itr = m_Elements_map.emplace(key, std::make_unique<JsonBaseType>()).first;
 		}
 		return *(itr->second.get());
 	}

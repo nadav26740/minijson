@@ -12,7 +12,7 @@
 
 namespace MiniJson
 {
-	class Json
+	class Json : protected JsonBaseType
 	{
 	private:
 		// Private members and methods can be declared here

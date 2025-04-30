@@ -30,6 +30,7 @@ namespace MiniJson
 		union t_ValueUnions
 		{
 			std::shared_ptr<std::string> string_val;
+			std::shared_ptr<JsonBaseType> object_val;
 			float float_val;
 			bool bool_val;
 			t_ValueUnions() : string_val(nullptr) {} // Default constructor
@@ -47,6 +48,7 @@ namespace MiniJson
 		operator std::string();
 		operator float();
 		operator bool();
+		operator JsonBaseType();
 
 		// Opertaors
 		template <typename T>
@@ -55,6 +57,7 @@ namespace MiniJson
 		friend std::ostream& operator<<(std::ostream& os, const JsonBaseType& jsonElement);
 
 		JsonBaseType();
+		JsonBaseType(const JsonBaseType& val);
 
 		// Add public methods and members here
 		void GetType();
@@ -66,6 +69,7 @@ namespace MiniJson
 		bool& GetBool();
 		float& GetFloat();
 		std::string& GetString();
+		JsonBaseType& GetObject();
 
 	};
 
@@ -78,7 +82,10 @@ namespace MiniJson
 
 	template<>
 	bool& JsonBaseType::operator=<bool>(const bool& val);
-	// = Char
+
+	//template<>
+	//JsonBaseType& JsonBaseType::operator=<JsonBaseType>(const JsonBaseType& val);
+	//// = Char
 
 }
 

@@ -10,7 +10,12 @@ void MiniJson::JsonBaseType::Reset()
 	
 	case JSON_TYPE::JSON_ARRAY:
 		this->m_VectorElements.clear();
-	
+		break;
+
+	case JSON_TYPE::JSON_OBJECT:
+		this->m_ValueUnion.object_val.reset();
+		break;
+
 	default:
 		break;
 	}
@@ -33,10 +38,21 @@ MiniJson::JsonBaseType::operator bool()
 	return this->GetBool();
 }
 
+MiniJson::JsonBaseType::operator JsonBaseType()
+{
+	return this->GetObject();
+}
+
 MiniJson::JsonBaseType::JsonBaseType()
 {
 	this->m_type = JSON_TYPE::JSON_NULL;
 	this->m_ValueUnion.string_val = nullptr;
+}
+
+MiniJson::JsonBaseType::JsonBaseType(const JsonBaseType& val)
+{
+	this->m_type = val.m_type;
+	
 }
 
 void MiniJson::JsonBaseType::GetType()
@@ -103,6 +119,19 @@ std::string& MiniJson::JsonBaseType::GetString()
 	}
 }
 
+MiniJson::JsonBaseType& MiniJson::JsonBaseType::GetObject()
+{
+	// TODO: insert return statement here
+	if (this->m_type == JSON_TYPE::JSON_OBJECT)
+	{
+		return *(this->m_ValueUnion.object_val.get());
+	}
+	else
+	{
+		throw std::runtime_error("JSON Element Type mismatch: expected object");
+	}
+}
+
 template<>
 float& MiniJson::JsonBaseType::operator=<float>(const float& val)
 {
@@ -136,6 +165,15 @@ std::string& MiniJson::JsonBaseType::operator=(const char* val)
 	this->SetString(std::string(val));
 	return this->GetString();
 }
+
+//template<>
+//MiniJson::JsonBaseType& MiniJson::JsonBaseType::operator=<MiniJson::JsonBaseType>(const MiniJson::JsonBaseType& val)
+//{
+//	this->Reset();
+//	this->m_ValueUnion.object_val = std::make_shared<JsonBaseType>(val);
+//
+//	return *val.m_ValueUnion.object_val.get();
+//}
 
 //
 std::ostream& MiniJson::operator<<(std::ostream& os, const JsonBaseType& obj)
