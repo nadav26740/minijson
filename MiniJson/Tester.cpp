@@ -53,7 +53,6 @@ int main()
 		std::cerr << "Unknown error occurred." << std::endl;
 	}
 
-	getchar();
 	return EXIT_SUCCESS;	
 }
 

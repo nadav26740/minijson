@@ -43,6 +43,14 @@ MiniJson::JsonBaseType::operator JsonBaseType()
 	return this->GetObject();
 }
 
+std::string& MiniJson::JsonBaseType::operator=(const char* val)
+{
+	// TODO: insert return statement here
+	this->Reset();
+	this->SetString(val);
+	return this->GetString();
+}
+
 MiniJson::JsonBaseType::JsonBaseType()
 {
 	this->m_type = JSON_TYPE::JSON_NULL;
@@ -81,6 +89,14 @@ void MiniJson::JsonBaseType::SetBool(const bool& val)
 	
 	this->m_ValueUnion.bool_val = val;
 	this->m_type = JSON_TYPE::JSON_BOOL;
+}
+
+void MiniJson::JsonBaseType::SetObject(const JsonBaseType& val)
+{
+	this->Reset();
+	
+	this->m_ValueUnion.object_val = std::make_shared<JsonBaseType>(val);
+	this->m_type = JSON_TYPE::JSON_OBJECT;
 }
 
 bool& MiniJson::JsonBaseType::GetBool()
@@ -160,11 +176,13 @@ bool& MiniJson::JsonBaseType::operator=<bool>(const bool& val)
 }
 
 
-std::string& MiniJson::JsonBaseType::operator=(const char* val)
-{
-	this->SetString(std::string(val));
-	return this->GetString();
-}
+//
+//template<>
+//MiniJson::JsonBaseType& MiniJson::JsonBaseType::operator=<MiniJson::JsonBaseType>(const MiniJson::JsonBaseType& val)
+//{
+//	return this->GetObject();
+//}
+//
 
 //template<>
 //MiniJson::JsonBaseType& MiniJson::JsonBaseType::operator=<MiniJson::JsonBaseType>(const MiniJson::JsonBaseType& val)

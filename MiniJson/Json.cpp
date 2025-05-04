@@ -4,9 +4,15 @@ namespace MiniJson
 {
 	Json::Json()
 	{
+		this->m_type = JSON_TYPE::JSON_OBJECT;
 	}
 
 	JsonBaseType& Json::operator[](const std::string& key)
+	{
+		return this->at(key);
+	}
+
+	JsonBaseType& Json::operator[](const char* key)
 	{
 		return this->at(key);
 	}

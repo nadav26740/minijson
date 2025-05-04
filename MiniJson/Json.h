@@ -28,6 +28,7 @@ namespace MiniJson
 		T& emplace(const std::string& key, const T& val);
 
 		JsonBaseType& operator[](const std::string& key);
+		JsonBaseType& operator[](const char* key);
 
 		JsonBaseType& at(const std::string& key);
 		

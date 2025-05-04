@@ -25,7 +25,6 @@ namespace MiniJson
 	class JsonBaseType
 	{
 	private:
-		JSON_TYPE m_type;
 
 		union t_ValueUnions
 		{
@@ -42,6 +41,10 @@ namespace MiniJson
 		t_ValueUnions m_ValueUnion;
 		
 		void Reset();
+
+	protected:
+		JSON_TYPE m_type;
+
 
 	public:
 		// Parse Operators
@@ -65,6 +68,7 @@ namespace MiniJson
 		void SetString(const std::string& str);
 		void SetNumber(const float& val);
 		void SetBool(const bool& val);
+		void SetObject(const JsonBaseType& val);
 
 		bool& GetBool();
 		float& GetFloat();
@@ -82,6 +86,8 @@ namespace MiniJson
 
 	template<>
 	bool& JsonBaseType::operator=<bool>(const bool& val);
+
+	
 
 	//template<>
 	//JsonBaseType& JsonBaseType::operator=<JsonBaseType>(const JsonBaseType& val);
